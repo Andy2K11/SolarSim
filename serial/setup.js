@@ -1,9 +1,10 @@
 const SerialPort = require('serialport');
-const portString = process.env.SERIAL_PORT | 'COM4';
+const portString = process.env.SERIAL_PORT || 'COM4';
 const portOpts = {
     baudRate: 9600
 }
-const port = new SerialPort('COM4');  // if windows
+console.log(portString);
+const port = new SerialPort(portString);  // if windows
 let toggle = false;
 let value = 100;
 
