@@ -23,8 +23,12 @@
 const int solarVoltagePin = A15;  // Analog input pin that the potentiometer is attached to
 const int powerRailPin = A14;
 const int solarCurrentPin = A13;
+const int generatorLowPin = A12;
+const int generatorHighPin = A11;
 
 // Control
+const int genActPin = 8;
+const int motorActPin = 7;
 const int loadRedLED = 9; // Analog output pin that the LED is attached to
 
 // Constants
@@ -34,11 +38,15 @@ float solarVoltage = 0;
 float powerRail = 0;
 float solarCurrentRawV = 0;
 float loadCurrent = 0;
+float genHighV = 0;
+float genLowV = 0;
 
 const int bufferSize = 20;
 float solarVBuffer[bufferSize];
 float powerRailBuffer[bufferSize];
 float loadIBuffer[bufferSize];
+float genHighBuffer[bufferSize];
+float genLowBuffer[bufferSize];
 int stackPtr = 0;
 
 #define push(d, arr) arr[stackPtr] = d
@@ -51,25 +59,34 @@ float getBufferAvg(float arr[]) {
   return avg / bufferSize;
 }
 
-int outputValue = 150;        // value output to the PWM (analog out)
+int generatorValue = 250;
+int motorValue = 0;
+int outputValue = 0;        // value output to the PWM (analog out)
 
 void setup() {
   // initialize serial communications at 9600 bps:
   Serial.begin(9600);
 
+  analogWrite(genActPin, generatorValue);
+  analogWrite(motorActPin, motorValue);
   analogWrite(loadRedLED, outputValue);
 }
 
 char data;
-
+const float encToV = 204.6;
 void loop() {
-    solarVoltage = analogRead(solarVoltagePin) / 204.6;
-    powerRail = analogRead(powerRailPin) / 204.6;
-    solarCurrentRawV = analogRead(solarCurrentPin) / 204.6;
+    solarVoltage = analogRead(solarVoltagePin) / encToV;
+    powerRail = analogRead(powerRailPin) / encToV;
+    solarCurrentRawV = analogRead(solarCurrentPin) / encToV;
     loadCurrent = (powerRail - solarCurrentRawV) * 1000 / R1;
+
+    genHighV = analogRead(generatorHighPin) / encToV;
+    genLowV = analogRead(generatorLowPin) / encToV;
     push(solarVoltage, solarVBuffer);
     push(powerRail, powerRailBuffer);
     push(loadCurrent, loadIBuffer);
+    push(genHighV, genHighBuffer);
+    push(genLowV, genLowBuffer);
 
     stackPtr++;
     if (stackPtr == bufferSize) {
@@ -79,6 +96,10 @@ void loop() {
       Serial.print(getBufferAvg(powerRailBuffer));
       Serial.print(',');
       Serial.print(getBufferAvg(loadIBuffer));
+      Serial.print(',');
+      Serial.print(getBufferAvg(genHighBuffer));
+      Serial.print(',');
+      Serial.print(getBufferAvg(genLowBuffer));
       Serial.println(';');
       Serial.println(powerRail);
     }
@@ -92,7 +113,17 @@ void serialEvent() {
   int len = Serial.available();
   data = (char) Serial.readBytes(message, len);
   Serial.println(message);
-  outputValue = atoi(message);
+  String msgStr = String(message);
+  // find command values
+  int lastIndex = 0;
+  generatorValue = msgStr.substring(0, 2).toInt();
+  motorValue = msgStr.substring(4, 6).toInt();
+  outputValue = msgStr.substring(8, 10).toInt();
+  Serial.print(generatorValue);
+  Serial.print(motorValue);
+  Serial.print(outputValue);
+  analogWrite(generatorHighPin, generatorValue);
+  analogWrite(generatorLowPin, motorValue);
   analogWrite(loadRedLED, outputValue);
 }
 
