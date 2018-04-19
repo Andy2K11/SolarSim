@@ -122,6 +122,7 @@ void serialEvent() {
   Serial.print(generatorValue);
   Serial.print(motorValue);
   Serial.print(outputValue);
+  Serial.println(';');
   analogWrite(generatorHighPin, generatorValue);
   analogWrite(generatorLowPin, motorValue);
   analogWrite(loadRedLED, outputValue);

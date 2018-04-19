@@ -4,7 +4,8 @@ const portOpts = {
     baudRate: 9600
 }
 console.log(portString);
-const port = new SerialPort(portString);  // if windows
+const port = new SerialPort(portString);
+// .catch((err) => console.error(err.message));  // if windows
 let toggle = false;
 let value = 100;
 
