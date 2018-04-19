@@ -28,6 +28,7 @@ router.get('/', (req, res, next) => {
             readings[Object.keys(readings)[index]] = value;
         });
     }
+    console.log(readings);
     return res.json({
         readings
     });

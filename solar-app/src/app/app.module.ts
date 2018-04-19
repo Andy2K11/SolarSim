@@ -11,6 +11,8 @@ import { WelcomeComponent } from './welcome/welcome.component';
 import { VideoService } from './start/video.service';
 import { KeywordListComponent } from './start/keyword-list.component';
 import { KeywordComponent } from './start/keyword.component';
+import { DataService } from './sim/data.service';
+import { HttpClientModule } from '@angular/common/http';
 
 
 @NgModule({
@@ -25,9 +27,10 @@ import { KeywordComponent } from './start/keyword.component';
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
-  providers: [VideoService],
+  providers: [VideoService, DataService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
