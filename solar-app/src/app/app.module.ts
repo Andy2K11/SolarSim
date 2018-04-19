@@ -14,6 +14,8 @@ import { KeywordComponent } from './start/keyword.component';
 import { DataService } from './sim/data.service';
 import { HttpClientModule } from '@angular/common/http';
 
+import { D3Service } from 'd3-ng2-service';
+
 
 @NgModule({
   declarations: [
@@ -30,7 +32,7 @@ import { HttpClientModule } from '@angular/common/http';
     AppRoutingModule,
     HttpClientModule
   ],
-  providers: [VideoService, DataService],
+  providers: [VideoService, DataService, D3Service],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
