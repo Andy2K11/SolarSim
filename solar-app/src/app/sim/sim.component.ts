@@ -21,14 +21,31 @@ export class SimComponent implements OnInit {
     this.parentNativeElement = element.nativeElement;
   }
 
-  ngOnInit() {
-    this.dataService.getData().subscribe(data => {
-      this.data = data;
-    }, err => { console.error(err); });
+  private update(svg, data) {
+    svg
+    .selectAll('rect')
+    .data(data)
+    .enter()
+    .append('rect')
+      .attr('x', (d, i) => i * 55)
+      .attr('y', (d, i) => 300 - d * 10)
+      .attr('width', 50)
+      .attr('height', (d, i) => d * 10)
+      .style('fill', (d, i) => `rgb(0, ${d * 10}, 0)`);
+  }
 
+  ngOnInit() {
     const d3 = this.d3;
     const d3ParentElement = d3.select(this.parentNativeElement);
-
-    d3ParentElement.style('color', 'red');
+    const svg = d3ParentElement
+      .append('svg')
+        .attr('width', 800)
+        .attr('height', 300)
+        .attr('class', 'svg-canvas');
+    this.dataService.getData().subscribe(data => {
+      this.data = data;
+      data = [5, 10, 15, 20, 15];
+      this.update(svg, data);
+    }, err => { console.error(err); });
   }
 }

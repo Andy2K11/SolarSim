@@ -5,11 +5,11 @@ import { StartComponent } from './start/start.component';
 import { WelcomeComponent } from './welcome/welcome.component';
 
 const routes: Routes = [
+  // {
+  //   path: '', component: WelcomeComponent
+  // },
   {
-    path: '', component: WelcomeComponent
-  },
-  {
-    path: '', redirectTo: '/', pathMatch: 'full'
+    path: '', redirectTo: '/sim', pathMatch: 'full'
   },
   {
       path: 'start', component: StartComponent
