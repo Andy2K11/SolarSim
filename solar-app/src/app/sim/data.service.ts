@@ -17,4 +17,8 @@ export class DataService {
       return this.httpClient.get<Data>('//localhost:3000/data/');
     }));
   }
+
+  postData(cmd): Observable<any> {
+    return this.httpClient.post<any>('//localhost:3000/data/', cmd);
+  }
 }

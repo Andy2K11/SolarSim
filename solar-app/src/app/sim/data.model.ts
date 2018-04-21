@@ -1,6 +1,6 @@
 export class Data {
   constructor(
-    readings: {
+    public readings: {
       solarVolts: number,
       powerVolts: number,
       loadCurrent: number,

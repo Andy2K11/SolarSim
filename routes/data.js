@@ -28,15 +28,19 @@ router.get('/', (req, res, next) => {
             readings[Object.keys(readings)[index]] = value;
         });
     }
-    console.log(readings);
     return res.json({
         readings
     });
 });
 
 router.post('/', (req, res, next) => {
-    let data = req.body.data;
-    port.write(data.toString());
+    const load = req.body.load;
+    const generator = req.body.generator;
+    const motor = req.body.motor;
+    port.write(`${load},${generator},${motor};`);
+    res.json({
+        message: 'ok'
+    });
 });
 
 module.exports = router;

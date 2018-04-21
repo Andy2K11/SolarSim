@@ -13,6 +13,7 @@ import { KeywordListComponent } from './start/keyword-list.component';
 import { KeywordComponent } from './start/keyword.component';
 import { DataService } from './sim/data.service';
 import { HttpClientModule } from '@angular/common/http';
+import { FormsModule } from '@angular/forms';
 
 import { D3Service } from 'd3-ng2-service';
 
@@ -30,7 +31,8 @@ import { D3Service } from 'd3-ng2-service';
   imports: [
     BrowserModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule
   ],
   providers: [VideoService, DataService, D3Service],
   bootstrap: [AppComponent]

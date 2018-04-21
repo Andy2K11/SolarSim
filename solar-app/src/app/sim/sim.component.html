@@ -1,7 +1,24 @@
-<p>
-  sim works!
-</p>
-{{ data | json }}
-<div class="chart">
-
+<div id="chart" class="container">
 </div>
+
+<form class="container" (ngSubmit)="send()" (ngModelChange)="send()">
+  <div class="row">
+    <div class="col-4">
+      <label for="load">Load (%)</label>
+      <input id="load" name="load" type="number" min="0" max="100"
+      [(ngModel)]="load"
+      >
+    </div>
+    <div class="col-4">
+      <label for="generator">Generator On</label>
+      <input id="generator" name="generator" type="checkbox" value="100" ngModel>
+    </div>
+    <div class="col-4">
+      <label for="motor">Motor On</label>
+      <input id="motor" name="motor" type="checkbox" value="100" ngModel>
+    </div>
+  </div>
+  <button type="submit">Send</button>
+</form>
+<hr>
+{{ generator }}
