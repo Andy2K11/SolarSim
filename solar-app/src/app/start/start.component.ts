@@ -7,7 +7,7 @@ import { VideoService } from './video.service';
   styleUrls: ['./start.component.scss']
 })
 export class StartComponent implements OnInit {
-  url = '//localhost:3000/video/stream/sunny';
+  url: string;  // = '//localhost:3000/video/stream/sunny';
 
   constructor(private videoService: VideoService) { }
 

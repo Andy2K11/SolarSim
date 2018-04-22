@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class VideoService {
-  url = '//localhost:3000/video/stream/sunny';
+  url = `//${environment.domain}:3000/video/stream/sunny`;
   constructor() { }
 
   /**

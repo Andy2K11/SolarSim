@@ -4,6 +4,8 @@ const path = require('path');
 const SerialPort = require('serialport');
 
 const portString = process.env.SERIAL_PORT || 'COM4';
+console.log(`Serial port set as ${portString}`);
+
 const portOpts = {
     baudRate: 9600
 }

@@ -4,6 +4,7 @@ import { Observable } from 'rxjs/Observable';
 import { HttpClient } from '@angular/common/http';
 import { mergeMap } from 'rxjs/operators';
 import 'rxjs/add/observable/interval';
+import { environment } from '../../environments/environment';
 
 // https://www.learnrxjs.io/recipes/http-polling.html
 
@@ -14,11 +15,11 @@ export class DataService {
 
   getData(): Observable<Data> {
     return Observable.interval(2000).pipe(mergeMap(() => {
-      return this.httpClient.get<Data>('//localhost:3000/data/');
+      return this.httpClient.get<Data>(`//${environment.domain}:3000/data/`);
     }));
   }
 
   postData(cmd): Observable<any> {
-    return this.httpClient.post<any>('//localhost:3000/data/', cmd);
+    return this.httpClient.post<any>(`//${environment.domain}:3000/data/`, cmd);
   }
 }
