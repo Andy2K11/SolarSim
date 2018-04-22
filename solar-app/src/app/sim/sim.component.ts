@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, OnDestroy } from '@angular/core';
 import { DataService } from './data.service';
 import { Data } from './data.model';
 import { Observable } from 'rxjs/Observable';
@@ -9,7 +9,7 @@ import { D3Service, D3, Selection, SelectionFn } from 'd3-ng2-service';
   templateUrl: './sim.component.html',
   styleUrls: ['./sim.component.scss']
 })
-export class SimComponent implements OnInit {
+export class SimComponent implements OnInit, OnDestroy {
   data: Data;
   poll: any;
 
@@ -21,6 +21,7 @@ export class SimComponent implements OnInit {
   generator: boolean;
   motor: boolean;
 
+  subscription;
 
   constructor(private dataService: DataService, element: ElementRef, d3Service: D3Service) {
     this.d3 = d3Service.getD3();
@@ -154,11 +155,14 @@ export class SimComponent implements OnInit {
     .attr('class', 'svg-canvas');
     this.init(svg);
 
-    this.dataService.getData().subscribe(data => {
+    this.subscription = this.dataService.getData().subscribe(data => {
       this.data = data;
       this.update(svg, Object.values(data.readings));
     }, err => { console.error(err); });
+  }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 
   send() {
