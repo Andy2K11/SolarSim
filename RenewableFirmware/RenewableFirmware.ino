@@ -32,7 +32,7 @@ const int motorActPin = 7;
 const int loadRedLED = 9; // Analog output pin that the LED is attached to
 
 // Constants
-const int R1 = 468;
+const int R1 = 10;
 
 float solarVoltage = 0;
 float powerRail = 0;
@@ -59,7 +59,7 @@ float getBufferAvg(float arr[]) {
   return avg / bufferSize;
 }
 
-int generatorValue = 250;
+int generatorValue = 0;
 int motorValue = 0;
 int outputValue = 0;        // value output to the PWM (analog out)
 
@@ -101,7 +101,6 @@ void loop() {
       Serial.print(',');
       Serial.print(getBufferAvg(genLowBuffer));
       Serial.println(';');
-      Serial.println(powerRail);
     }
 
     delay(50);
@@ -112,19 +111,26 @@ char message[64];
 void serialEvent() {
   int len = Serial.available();
   data = (char) Serial.readBytes(message, len);
-  Serial.println(message);
+//  Serial.println(message);
   String msgStr = String(message);
   // find command values
   int lastIndex = 0;
-  generatorValue = msgStr.substring(0, 2).toInt();
-  motorValue = msgStr.substring(4, 6).toInt();
-  outputValue = msgStr.substring(8, 10).toInt();
-  Serial.print(generatorValue);
-  Serial.print(motorValue);
-  Serial.print(outputValue);
-  Serial.println(';');
-  analogWrite(generatorHighPin, generatorValue);
-  analogWrite(generatorLowPin, motorValue);
+  int index1 = msgStr.indexOf(',');
+//  Serial.println(index1);
+  outputValue = msgStr.substring(0, index1).toInt();
+  int index2 = msgStr.indexOf(',', index1 + 1);
+//  Serial.println(index2);
+  generatorValue = msgStr.substring(index1 + 1, index2).toInt();
+  int index3 = msgStr.indexOf(';');
+//  Serial.println(index3);
+  motorValue = msgStr.substring(index2 + 1, index3).toInt();
+//  Serial.print(generatorValue);
+//  Serial.println(';');
+//  Serial.print(motorValue);
+//  Serial.print(outputValue);
+//  Serial.println(';');
+  analogWrite(genActPin, motorValue);
+  analogWrite(motorActPin, generatorValue);
   analogWrite(loadRedLED, outputValue);
 }
 

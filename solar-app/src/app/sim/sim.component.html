@@ -1,24 +1,91 @@
+<div class="container">
+  <h2>Instructions</h2>
+  <p>
+    Use the controls to adjust the load from 0% to 100% and see how the stored power
+    in the system varies. You can also either supply more power from the wind generator
+    ,if available, or if there is plenty of solar eneergy convert the generator into a
+    fan motor.
+  </p>
+  <p>
+    If both motor and generator are on then the direction of current will depend on whether
+    the energy being produced from the wind is greater than the energy already in the system.
+  </p>
+  <p>
+    The stored energy should not exceed 2.5v but needs to be above about 1.7v in order for
+    the load (red LED) to switch on, even dimly.
+  </p>
+  <p>
+    The orange LED prevents serious overcharging of the storage device and represents
+    energy wasted by too much supply with a low demand.
+  </p>
+</div>
+
 <div id="chart" class="container">
 </div>
 
-<form class="container" (ngSubmit)="send()" (ngModelChange)="send()">
-  <div class="row">
-    <div class="col-4">
-      <label for="load">Load (%)</label>
-      <input id="load" name="load" type="number" min="0" max="100"
-      [(ngModel)]="load"
-      >
-    </div>
-    <div class="col-4">
-      <label for="generator">Generator On</label>
-      <input id="generator" name="generator" type="checkbox" value="100" ngModel>
-    </div>
-    <div class="col-4">
-      <label for="motor">Motor On</label>
-      <input id="motor" name="motor" type="checkbox" value="100" ngModel>
-    </div>
-  </div>
-  <button type="submit">Send</button>
-</form>
 <hr>
-{{ generator }}
+
+<form id="controls" class="container" (ngSubmit)="send()" (ngModelChange)="send()">
+  <fieldset>
+    <legend>Controls</legend>
+    <div class="row">
+      <div class="col-3">
+        <label for="load">Load (%)</label>
+        <input id="load" name="load" type="number" min="0" max="100"
+        [(ngModel)]="load"
+        >
+      </div>
+      <div class="col-3">
+        <label for="generator">Generator On</label>
+        <input id="generator" name="generator" type="checkbox" value="true" [(ngModel)]="generator">
+      </div>
+      <div class="col-3">
+        <label for="motor">Motor On</label>
+        <input id="motor" name="motor" type="checkbox" [(ngModel)]="motor">
+      </div>
+      <div class="col-3">
+        <button type="submit">Send</button>
+      </div>
+    </div>
+  </fieldset>
+</form>
+
+<hr>
+
+<div class="container">
+  <section>
+    <h3>Solar Volts</h3>
+    <p>
+      The solar volts gives an indication of the power being provided through solar
+      photovoltaic energy
+    </p>
+  </section>
+  <section>
+    <h3>Store Volts</h3>
+    <p>
+      The store volts indicates the available power to drive the load or the motor.
+      As solar or wind energy is fed into the system the store voltage should rise. If
+      neither energy source is providing power then the load must be powered from
+      stored energy.
+    </p>
+  </section>
+  <section>
+    <h3>Load Current</h3>
+    <p>
+      The load current indicates the power being used by a hypothetical consumer
+      represented by the red LED. In reality this could be a home, a factory, or
+      any other utility connected to the grid.
+    </p>
+  </section>
+  <section>
+    <h3>Generator / Motor</h3>
+    <p>
+      The generator high voltage and generator low voltage shows the potential
+      difference across the generator. Depending on how the motor and generator
+      switchs are set this could be providing wind energy as a generator or
+      consuming energy as a motor. In renewable energy systems it is useful to be
+      able to control the direction of power depending on supply and demand
+      fluctuations
+    </p>
+  </section>
+</div>

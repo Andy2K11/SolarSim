@@ -34,10 +34,12 @@ router.get('/', (req, res, next) => {
 });
 
 router.post('/', (req, res, next) => {
-    const load = req.body.load;
-    const generator = req.body.generator;
-    const motor = req.body.motor;
-    port.write(`${load},${generator},${motor};`);
+    const load = req.body.load || 0;
+    const generator = req.body.generator || 0;
+    const motor = req.body.motor || 0;
+    const cmd = `${load},${generator},${motor};`
+    console.log(cmd);
+    port.write(cmd);
     res.json({
         message: 'ok'
     });
