@@ -1,3 +1,10 @@
-<p>
-  keyword-list works!
-</p>
+<h2>Key Definitions</h2>
+<section class="row">
+  <p>Before moving on, familiarise yourself with some key concepts and terminology:</p>
+  <ul>
+    <li *ngFor="let term of keywords">
+      <app-keyword [keyword]="term"></app-keyword>
+    </li>
+  </ul>
+</section>
+<p>When you're done move on to the <a routerLink="/sim">Solar Simulator</a></p>
